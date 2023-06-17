@@ -1,23 +1,25 @@
-import { Inject, Injectable } from '@nestjs/common'
+import { Injectable } from '@nestjs/common'
+import { Knex } from 'knex'
+import { InjectModel } from 'nest-knexjs'
 
 import { Result } from 'src/common/result-handler'
+
 import { UserEntity } from '../entities/user.entity'
 import {
   IUserOutboundModel,
-  IUserRepository,
-  UserOutboundModel
+  IUserRepository
 } from './user.repository.interfaces'
 
 @Injectable()
 export class UserRepository implements IUserRepository {
   constructor(
-    @Inject(UserOutboundModel.name)
-    private readonly userModel: IUserOutboundModel
+    @InjectModel()
+    private readonly knex: Knex
   ) {}
 
   async createUser(user: UserEntity) {
     try {
-      await this.userModel.query().insert({
+      await this.knex.table<IUserOutboundModel>('users').insert({
         name: user.raw.firstname,
         surname: user.raw.surname,
         birthdate: user.raw.birthdate
@@ -31,14 +33,32 @@ export class UserRepository implements IUserRepository {
 
   async listUsers() {
     try {
-      const usersModel = await this.userModel.query()
-      const users = usersModel.map((u) =>
-        UserEntity.create({ ...u, firstname: u.name, genres: [] })
-      )
+      const usersModels = await this.listUsersQuery()
+      const usersEntities = []
 
-      return Result.ok(users)
+      for (const user of usersModels) {
+        const genres = await this.listGenresQuery(user.id)
+        usersEntities.push(UserEntity.create({ ...user, genres }))
+      }
+
+      return Result.ok(usersEntities)
     } catch (error) {
       return Result.fail(error)
     }
+  }
+
+  private listUsersQuery() {
+    return this.knex(IUserOutboundModel.tb).select(
+      'id',
+      'name as firstname',
+      'surname',
+      'birthdate'
+    )
+  }
+
+  private listGenresQuery(userId: string) {
+    return this.knex(IUserOutboundModel.tb_genres)
+      .select('id')
+      .where(IUserOutboundModel.tb_genres_fk, userId)
   }
 }

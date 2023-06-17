@@ -3,5 +3,5 @@ export interface IUserData {
   firstname: string
   surname: string
   birthdate: string
-  genres: string[]
+  genres: { id: string }[]
 }

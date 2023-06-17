@@ -32,7 +32,8 @@ export class UserController {
   }
 
   @Get('/list')
-  getList() {
-    return this.userService.listUsers()
+  async getList() {
+    const result = await this.userService.listUsers()
+    return result.value
   }
 }

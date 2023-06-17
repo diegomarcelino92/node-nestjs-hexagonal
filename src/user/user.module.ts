@@ -12,4 +12,3 @@ import { UserController } from './user.controller'
   ]
 })
 export class UserModule {}
-export { UserOutboundModel } from './repositories'

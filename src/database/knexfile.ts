@@ -1,9 +1,25 @@
-import type { Knex } from 'knex'
+import type { Knex as KN } from 'knex'
+import { Knex } from 'knex'
 
-import { DB_CONFIG } from './connection.config'
+export const DB_CONFIG: KN.Config = {
+  client: 'pg',
+  connection: {
+    host: '127.0.0.1',
+    database: 'nestjs',
+    user: 'admin',
+    password: 'admin'
+  },
+  pool: {
+    min: 2,
+    max: 7
+  },
+  migrations: {
+    tableName: 'knex_migrations'
+  }
+}
 
-const config: { [key: string]: Knex.Config } = {
+export const KNEX_CONFIG: { [key: string]: Knex.Config } = {
   development: DB_CONFIG
 }
 
-export default config
+export default KNEX_CONFIG

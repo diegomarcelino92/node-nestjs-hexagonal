@@ -1,5 +1,4 @@
-import { Model, ModelClass } from 'objection'
-
+import { BaseModel } from 'src/common/models/base.model'
 import { Result } from 'src/common/result-handler'
 
 import { UserEntity } from '../entities/user.entity'
@@ -11,14 +10,12 @@ export interface IUserRepository {
   listUsers(): Promise<Result<UserEntity[]>>
 }
 
-export type IUserOutboundModel = ModelClass<UserOutboundModel>
-
-export class UserOutboundModel extends Model {
-  static tableName = 'users'
+export class IUserOutboundModel extends BaseModel {
+  static tb = 'users'
+  static tb_genres = 'user_genres'
+  static tb_genres_fk = 'user_genres.user_id'
   id: number
   name: string
   surname: string
   birthdate: string
-  createdAt: string
-  updatedAt: string
 }

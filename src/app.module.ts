@@ -1,11 +1,10 @@
 import { Module } from '@nestjs/common'
+import { KnexModule } from 'nest-knexjs'
 
-import { DatabaseModule } from './database/database.module'
-import { UserModule, UserOutboundModel } from './user/user.module'
-
-const models = [UserOutboundModel]
+import { DB_CONFIG } from './database/knexfile'
+import { UserModule } from './user/user.module'
 
 @Module({
-  imports: [DatabaseModule.forRoot(models), UserModule]
+  imports: [KnexModule.forRoot({ config: DB_CONFIG }), UserModule]
 })
 export class AppModule {}

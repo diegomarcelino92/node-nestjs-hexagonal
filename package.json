@@ -19,14 +19,15 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json",
     "migration:make": "knex --knexfile ./src/database/knexfile migrate:make -x ts",
-    "migration:migrate": "knex --knexfile ./src/database/knexfile migrate:latest"
+    "migration:migrate": "knex --knexfile ./src/database/knexfile migrate:latest",
+    "migration:rollback": "knex --knexfile ./src/database/knexfile migrate:rollback --all"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",
     "@nestjs/core": "^9.0.0",
     "@nestjs/platform-express": "^9.0.0",
     "knex": "^2.4.2",
-    "objection": "^3.0.1",
+    "nest-knexjs": "^0.0.17",
     "pg": "^8.11.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.2.0"
