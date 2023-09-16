@@ -1,43 +1,52 @@
-import { Injectable } from '@nestjs/common'
-import { Knex } from 'knex'
-import { InjectModel } from 'nest-knexjs'
+import { Inject, Injectable } from '@nestjs/common'
 
 import { Result } from 'src/common/result-handler'
 
+import { DatabaseService } from 'src/database/database.service'
 import { UserEntity } from '../entities/user.entity'
+import { IUserData } from '../entities/user.entity.interfaces'
+import { IUserRepository } from './user.repository.interfaces'
 import {
-  IUserOutboundModel,
-  IUserRepository
-} from './user.repository.interfaces'
+  UserGenreOutboundModel,
+  UserOutboundModel
+} from './user.repository.models'
 
 @Injectable()
 export class UserRepository implements IUserRepository {
   constructor(
-    @InjectModel()
-    private readonly knex: Knex
+    @Inject(DatabaseService)
+    private readonly db: DatabaseService
   ) {}
 
-  async createUser(user: UserEntity) {
-    try {
-      await this.knex.table<IUserOutboundModel>('users').insert({
-        name: user.raw.firstname,
-        surname: user.raw.surname,
-        birthdate: user.raw.birthdate
-      })
+  async createUser(user: IUserData) {
+    const userModel = UserOutboundModel.create(user)
 
+    try {
+      await this.db.query.transaction(async (trx) => {
+        const [{ id }] = await trx
+          .insert(userModel, 'id')
+          .into(this.db.table.users)
+
+        const userGenreModel = user.genres.map((gid) =>
+          UserGenreOutboundModel.create(gid, id)
+        )
+
+        await trx.insert(userGenreModel).into(this.db.table.usersGenres)
+      })
       return Result.ok('created')
     } catch (error) {
+      console.log(error)
       return Result.fail(error)
     }
   }
 
   async listUsers() {
     try {
-      const usersModels = await this.listUsersQuery()
+      const usersModels = []
       const usersEntities = []
 
       for (const user of usersModels) {
-        const genres = await this.listGenresQuery(user.id)
+        const genres = []
         usersEntities.push(UserEntity.create({ ...user, genres }))
       }
 
@@ -45,20 +54,5 @@ export class UserRepository implements IUserRepository {
     } catch (error) {
       return Result.fail(error)
     }
-  }
-
-  private listUsersQuery() {
-    return this.knex(IUserOutboundModel.tb).select(
-      'id',
-      'name as firstname',
-      'surname',
-      'birthdate'
-    )
-  }
-
-  private listGenresQuery(userId: string) {
-    return this.knex(IUserOutboundModel.tb_genres)
-      .select('id')
-      .where(IUserOutboundModel.tb_genres_fk, userId)
   }
 }

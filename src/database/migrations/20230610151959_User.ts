@@ -1,9 +1,8 @@
 import { Knex } from 'knex'
-
-export const USER_TABLE = 'users'
+import { users } from '../database.tables'
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable(USER_TABLE, (t) => {
+  return knex.schema.createTable(users, (t) => {
     t.increments('id').primary()
     t.text('name')
     t.text('surname')
@@ -14,5 +13,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists(USER_TABLE)
+  return knex.schema.dropTableIfExists(users)
 }

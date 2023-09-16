@@ -12,6 +12,7 @@ export class Result<T, E = Error> {
   static ok<V>(value: V) {
     return new this(true, value)
   }
+
   static fail<E>(error: E) {
     return new this(false, undefined, error)
   }

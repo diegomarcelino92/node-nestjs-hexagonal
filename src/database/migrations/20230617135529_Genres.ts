@@ -1,8 +1,8 @@
 import { Knex } from 'knex'
+import { genres } from '../database.tables'
 
-export const GENRES_TABLE = 'genres'
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema.createTable(GENRES_TABLE, (t) => {
+  return knex.schema.createTable(genres, (t) => {
     t.increments('id').primary()
     t.string('name')
     t.text('description')
@@ -12,5 +12,5 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTableIfExists(GENRES_TABLE)
+  return knex.schema.dropTableIfExists(genres)
 }

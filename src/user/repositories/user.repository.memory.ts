@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common'
 
 import { Result } from 'src/common/result-handler'
-import { UserEntity } from '../entities/user.entity'
+import { IUserData } from '../entities/user.entity.interfaces'
 import { IUserRepository } from './user.repository.interfaces'
 
 @Injectable()
 export class UserRepositoryInMemory implements IUserRepository {
-  list: UserEntity[] = []
+  list: IUserData[] = []
 
   _increment = 0
   get autoIncrementId(): number {

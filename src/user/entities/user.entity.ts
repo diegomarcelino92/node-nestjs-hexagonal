@@ -11,7 +11,7 @@ export class UserEntity extends BaseEntity<IUserData> {
   }
 
   static create(raw: IUserData): UserEntity {
-    if (raw.firstname.length > 3 && raw.surname && raw.birthdate) {
+    if (raw.name.length > 3 && raw.surname && raw.birthdate) {
       return new this(raw)
     }
 

@@ -1,7 +1,6 @@
 export interface IUserData {
-  id?: number
-  firstname: string
+  name: string
   surname: string
   birthdate: string
-  genres: { id: string }[]
+  genres: string[]
 }
