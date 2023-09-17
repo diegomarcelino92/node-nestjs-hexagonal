@@ -9,14 +9,16 @@ import * as tables from './database.tables'
 export class DatabaseService {
   table: typeof tables
   query: Knex
-
-  users: Knex.QueryBuilder
-  usersGenres: Knex.QueryBuilder
+  readonly genres: Knex.QueryBuilder
+  readonly users: Knex.QueryBuilder
+  readonly usersGenres: Knex.QueryBuilder
 
   constructor(@InjectModel() private readonly knex: Knex) {
     this.query = this.knex
     this.table = tables
-    this.users = this.knex(this.table.users)
-    this.usersGenres = this.knex(this.table.users)
+
+    Object.entries(this.table).forEach(([key, tableName]) => {
+      this[key] = this.knex(tableName)
+    })
   }
 }
