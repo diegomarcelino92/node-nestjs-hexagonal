@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common'
 
-import { GenreEntity } from '../entities/genre.entity'
+import { GenreEntity } from '../entities/genres.entity'
 import { GENRE_REPOSITORY } from '../respositories/genre.repository'
 import { IGenreRepository } from '../respositories/genre.repository.interfaces'
 import { IGenreService } from './genres.service.interfaces'
