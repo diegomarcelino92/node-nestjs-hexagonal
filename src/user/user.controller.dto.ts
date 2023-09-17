@@ -3,7 +3,7 @@ import { IsArray, IsString } from '@nestjs/class-validator'
 
 import { IUserData } from './entities/user.entity.interfaces'
 
-export class IUserInboundDTO implements IUserData {
+export class UserInboundDTO implements IUserData {
   @Expose({ name: 'firstname' })
   @IsString()
   name: string

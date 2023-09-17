@@ -4,7 +4,6 @@ import { Result } from 'src/common/result-handler'
 
 import { DatabaseService } from 'src/database/database.service'
 import { UserEntity } from '../entities/user.entity'
-import { IUserData } from '../entities/user.entity.interfaces'
 import { IUserRepository } from './user.repository.interfaces'
 import {
   UserGenreOutboundModel,
@@ -18,20 +17,20 @@ export class UserRepository implements IUserRepository {
     private readonly db: DatabaseService
   ) {}
 
-  async createUser(user: IUserData) {
+  async createUser(user) {
     const userModel = UserOutboundModel.create(user)
 
     try {
       await this.db.query.transaction(async (trx) => {
-        const [{ id }] = await trx
+        const [{ id }] = await this.db.users
           .insert(userModel, 'id')
-          .into(this.db.table.users)
+          .transacting(trx)
 
         const userGenreModel = user.genres.map((gid) =>
           UserGenreOutboundModel.create(gid, id)
         )
 
-        await trx.insert(userGenreModel).into(this.db.table.usersGenres)
+        await this.db.usersGenres.insert(userGenreModel).transacting(trx)
       })
       return Result.ok('created')
     } catch (error) {

@@ -9,7 +9,7 @@ import {
 } from '@nestjs/common'
 
 import { IUserService, USER_SERVICE } from './services'
-import { IUserInboundDTO } from './user.controller.intarfaces'
+import { UserInboundDTO } from './user.controller.dto'
 
 @Controller('user')
 export class UserController {
@@ -19,7 +19,7 @@ export class UserController {
   ) {}
 
   @Post('/create')
-  async create(@Body() body: IUserInboundDTO) {
+  async create(@Body() body: UserInboundDTO) {
     const result = await this.userService.createUser(body)
 
     if (result.ok) {
