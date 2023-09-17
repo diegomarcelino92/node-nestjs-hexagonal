@@ -2,10 +2,6 @@ import { BaseEntity } from 'src/common/entities/base.entity'
 import { IUserData } from './user.entity.interfaces'
 
 export class UserEntity extends BaseEntity<IUserData> {
-  private constructor(raw: IUserData) {
-    super(raw)
-  }
-
   get isMajority(): boolean {
     return true
   }
