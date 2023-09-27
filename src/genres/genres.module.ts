@@ -4,7 +4,7 @@ import { GenresController } from './genres.controller'
 import {
   GENRE_REPOSITORY,
   GenreRepository
-} from './respositories/genre.repository'
+} from './respositories/genres.repository'
 import { GENRE_SERVICE, GenreService } from './services/genres.service'
 
 @Module({
