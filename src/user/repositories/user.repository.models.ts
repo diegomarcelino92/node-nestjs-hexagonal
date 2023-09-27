@@ -2,10 +2,20 @@ import { Exclude, Expose, plainToClass } from '@nestjs/class-transformer'
 
 import { BaseModel } from 'src/common/models/base.model'
 
-import { IUserData } from '../entities/user.entity.interfaces'
+import { IUserCreateDTO, IUserListDTO } from '../services'
+
+export class UserOutboundModelFactory {
+  static toPersistence(user: IUserCreateDTO) {
+    return plainToClass(UserCreateOutboundModel, user)
+  }
+
+  static toDto(user: IUserListDTO) {
+    return plainToClass(UserListOutboundModel, user)
+  }
+}
 
 @Exclude()
-export class UserOutboundModel extends BaseModel implements IUserData {
+class UserCreateOutboundModel extends BaseModel {
   @Expose()
   id: number
 
@@ -17,16 +27,16 @@ export class UserOutboundModel extends BaseModel implements IUserData {
 
   @Expose()
   birthdate: string
-
-  @Exclude()
-  genres: string[]
-
-  static create(user: IUserData) {
-    return plainToClass(this, user)
-  }
 }
 
+class UserListOutboundModel extends UserCreateOutboundModel {
+  @Expose()
+  genres: { name: string; description: string }[]
+}
+
+@Exclude()
 export class UserGenreOutboundModel extends BaseModel {
+  @Expose()
   id: number
 
   @Expose({ name: 'userId' })
@@ -35,7 +45,7 @@ export class UserGenreOutboundModel extends BaseModel {
   @Expose({ name: 'genreId' })
   genre_id: number
 
-  static create(genreId: string, userId: string) {
+  static toPersistence(genreId: string, userId: string) {
     return plainToClass(this, { genreId, userId })
   }
 }

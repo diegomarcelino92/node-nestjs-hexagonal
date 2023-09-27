@@ -2,5 +2,4 @@ export interface IUserData {
   name: string
   surname: string
   birthdate: string
-  genres: string[]
 }

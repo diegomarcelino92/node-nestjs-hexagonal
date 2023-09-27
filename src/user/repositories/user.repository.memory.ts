@@ -20,6 +20,6 @@ export class UserRepositoryInMemory implements IUserRepository {
   }
 
   listUsers() {
-    return Promise.resolve(Result.ok(this.list))
+    return Promise.resolve(Result.ok(this.list as any))
   }
 }

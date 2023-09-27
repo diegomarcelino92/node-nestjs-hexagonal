@@ -7,10 +7,10 @@ export class UserEntity extends BaseEntity<IUserData> {
   }
 
   static create(raw: IUserData): UserEntity {
-    if (raw.name.length > 3 && raw.surname && raw.birthdate) {
-      return new this(raw)
+    if (raw.name.length < 3) {
+      throw new Error('User name invalid')
     }
 
-    throw new Error('Method not implemented.')
+    return new this(raw)
   }
 }

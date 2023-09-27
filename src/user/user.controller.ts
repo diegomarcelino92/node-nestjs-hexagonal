@@ -32,6 +32,11 @@ export class UserController {
   @Get('/list')
   async getList() {
     const result = await this.userService.listUsers()
-    return result.value
+
+    if (result.ok) {
+      return result.value
+    } else {
+      throw new HttpException('ListError', HttpStatus.UNPROCESSABLE_ENTITY)
+    }
   }
 }

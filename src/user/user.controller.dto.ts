@@ -1,19 +1,23 @@
-import { Expose } from '@nestjs/class-transformer'
+import { Exclude, Expose } from '@nestjs/class-transformer'
 import { IsArray, IsString } from '@nestjs/class-validator'
 
-import { IUserData } from './entities/user.entity.interfaces'
+import { IUserCreateDTO } from './services'
 
-export class UserInboundDTO implements IUserData {
-  @Expose({ name: 'firstname' })
+@Exclude()
+export class UserInboundDTO implements IUserCreateDTO {
+  @Expose()
   @IsString()
   name: string
 
+  @Expose()
   @IsString()
   surname: string
 
+  @Expose()
   @IsString()
   birthdate: string
 
+  @Expose()
   @IsArray()
   genres: string[]
 }

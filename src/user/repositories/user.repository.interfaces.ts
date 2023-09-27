@@ -1,10 +1,10 @@
 import { Result } from 'src/common/result-handler'
 
-import { IUserData } from '../entities/user.entity.interfaces'
+import { IUserCreateDTO, IUserListDTO } from '../services'
 
 export const USER_REPOSITORY = 'USER_REPOSITORY'
 
 export interface IUserRepository {
-  createUser(user: IUserData): Promise<Result<string>>
-  listUsers(): Promise<Result<IUserData[]>>
+  createUser(user: IUserCreateDTO): Promise<Result<string>>
+  listUsers(): Promise<Result<IUserListDTO[]>>
 }
