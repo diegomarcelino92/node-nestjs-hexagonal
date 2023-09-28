@@ -1,5 +1,5 @@
 import { Knex } from 'knex'
-import { users } from '../database.tables'
+import { users } from '../tables'
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(users, (t) => {

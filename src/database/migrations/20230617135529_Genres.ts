@@ -1,5 +1,5 @@
 import { Knex } from 'knex'
-import { genres } from '../database.tables'
+import { genres } from '../tables'
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema.createTable(genres, (t) => {

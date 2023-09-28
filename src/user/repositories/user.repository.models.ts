@@ -15,9 +15,9 @@ export class UserOutboundModelFactory {
 }
 
 @Exclude()
-class UserCreateOutboundModel extends BaseModel {
+export class UserCreateOutboundModel extends BaseModel {
   @Expose()
-  id: number
+  id: string
 
   @Expose()
   name: string

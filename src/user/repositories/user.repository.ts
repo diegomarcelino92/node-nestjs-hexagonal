@@ -1,8 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common'
 
 import { Result } from 'src/common/result-handler'
-
 import { DatabaseService } from 'src/database/database.service'
+
 import { IUserRepository } from './user.repository.interfaces'
 import {
   UserGenreOutboundModel,
